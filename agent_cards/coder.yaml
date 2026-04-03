@@ -1,0 +1,16 @@
+agent_id: coder
+description: "Writes and executes Python code."
+trust_level: medium
+default_tool_policy: deny
+
+tools:
+  - name: code_executor
+    policy: allow
+    rate_limit_per_run: 5
+    reason: "Core tool for coder"
+  - name: file_writer
+    policy: allow
+    reason: "Coder may save generated scripts"
+  - name: web_search
+    policy: deny
+    reason: "Coder should not search — delegate back to researcher"

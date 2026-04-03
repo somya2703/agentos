@@ -1,0 +1,22 @@
+# AgentOS .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+.venv/
+
+# Traces (generated at runtime — large)
+traces/*.json
+outputs/
+
+# API keys
+.env
+*.key
+
+# IDE
+.vscode/
+.idea/
+*.swp

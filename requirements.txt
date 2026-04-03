@@ -1,0 +1,22 @@
+# AgentOS — Python dependencies
+# All open-source, no proprietary vendor lock-in
+
+# LLM backends (install the ones you need)
+anthropic>=0.40.0          # Claude API (optional — needs ANTHROPIC_API_KEY)
+# openai>=1.0.0            # OpenAI fallback (optional — needs OPENAI_API_KEY)
+
+# Agentic orchestration
+langgraph>=0.2.0
+langchain-core>=0.3.0
+
+# Agent cards & config
+pyyaml>=6.0
+ddgs>=0.1
+
+# Dev / testing
+pytest>=8.0
+pytest-asyncio>=0.23
+
+# Optional: local LLM via Ollama
+# ollama is a standalone binary — install from https://ollama.com
+# No Python package needed; we call its REST API directly.

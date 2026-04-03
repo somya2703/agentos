@@ -1,0 +1,13 @@
+agent_id: critic
+description: "Detects agentic failure modes in execution traces."
+trust_level: high
+default_tool_policy: deny
+
+tools:
+  - name: web_search
+    policy: deny
+    reason: "Critic analyses existing outputs only — no new research"
+  - name: code_executor
+    policy: deny
+  - name: file_writer
+    policy: deny

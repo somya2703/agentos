@@ -1,0 +1,16 @@
+agent_id: verifier
+description: "Fact-checks and validates outputs from other agents."
+trust_level: high
+default_tool_policy: deny
+
+tools:
+  - name: web_search
+    policy: allow
+    rate_limit_per_run: 5
+    reason: "Verifier may search to cross-check facts"
+  - name: code_executor
+    policy: deny
+    reason: "Verifier does not run code"
+  - name: file_writer
+    policy: deny
+    reason: "Verifier does not produce files"

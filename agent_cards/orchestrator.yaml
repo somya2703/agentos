@@ -1,0 +1,15 @@
+agent_id: orchestrator
+description: "Top-level planner and delegator. Decomposes tasks and aggregates results."
+trust_level: high
+default_tool_policy: deny
+
+tools:
+  - name: file_writer
+    policy: allow
+    reason: "Orchestrator may save final outputs"
+  - name: web_search
+    policy: deny
+    reason: "Orchestrator delegates research to the researcher agent"
+  - name: code_executor
+    policy: deny
+    reason: "Orchestrator delegates code execution to the coder agent"

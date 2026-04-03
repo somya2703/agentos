@@ -1,0 +1,16 @@
+agent_id: researcher
+description: "Researches topics using web search and internal knowledge."
+trust_level: medium
+default_tool_policy: deny
+
+tools:
+  - name: web_search
+    policy: allow
+    rate_limit_per_run: 10
+    reason: "Core tool for researcher"
+  - name: file_writer
+    policy: audit
+    reason: "Researcher may save reference documents — audited"
+  - name: code_executor
+    policy: deny
+    reason: "Researcher does not execute code"

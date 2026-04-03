@@ -1,0 +1,50 @@
+services:
+
+  # ── Ollama — local LLM server ──────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: agentos-ollama
+    volumes:
+      - ollama_models:/root/.ollama    # persist downloaded models
+    ports:
+      - "11434:11434"
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 30s
+    restart: unless-stopped
+
+  # ── Model pull — runs once, pulls llama3.2 into Ollama ────────────────
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: agentos-ollama-pull
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    entrypoint: ["ollama", "pull", "llama3.2"]
+    restart: "no"
+
+  # ── AgentOS app ────────────────────────────────────────────────────────
+  agentos:
+    build: .
+    container_name: agentos-app
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      # LLM backend — points to Ollama in the compose network
+      - OLLAMA_HOST=http://ollama:11434
+      # Optionally override with Claude (set in .env or shell)
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    volumes:
+      - ./traces:/app/traces          # traces persist on host
+      - ./outputs:/app/outputs        # outputs persist on host
+    command: python demo.py
+
+volumes:
+  ollama_models:                      # named volume — survives container restarts

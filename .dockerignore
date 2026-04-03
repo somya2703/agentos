@@ -1,0 +1,11 @@
+__pycache__/
+**/__pycache__/
+*.pyc
+.env
+.git/
+traces/*.json
+outputs/
+*.cast
+*.gif
+.venv/
+venv/
