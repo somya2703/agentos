@@ -1,8 +1,8 @@
-# AgentOS 🤖
+# AgentOS 
 
-> A cloud-agnostic, open-source multi-agent AI system with a built-in Agentic Software Development Lifecycle (ADLC) evaluation layer.
+> A cloud agnostic, open-source multi-agent AI system with a built-in Agentic Software Development Lifecycle (ADLC) evaluation layer.
 
-**Sovereignty-first design** — runs 100% locally via Ollama, or with any OpenAI-compatible API. No proprietary vendor lock-in. One command to spin up the entire stack.
+Runs 100% locally via Ollama, or with any OpenAI-compatible API. No proprietary vendor lock-in. One command to spin up the entire stack.
 
 ```bash
 docker compose up --build
@@ -22,7 +22,6 @@ docker compose up --build
 - [Model Notes](#model-notes)
 - [Design Decisions](#design-decisions)
 - [Agentic Failure Modes](#agentic-failure-modes)
-- [Roadmap](#roadmap)
 
 ---
 
@@ -35,7 +34,7 @@ AgentOS is a **multi-agent AI system** that decomposes complex tasks and routes 
 | **Orchestrator** | Reads the task, builds a plan, delegates to specialists, synthesises the final output |
 | **Researcher** | Searches the web (DuckDuckGo, no API key) and gathers knowledge |
 | **Coder** | Writes and executes Python in a sandboxed environment |
-| **Verifier** | Fact-checks and validates outputs from other agents |
+| **Verifier** | Fact checks and validates outputs from other agents |
 | **Critic** | Scans the execution trace for agentic failure modes |
 
 On top of the agent pipeline, an **ADLC (Agentic Software Development Lifecycle) layer** provides:
@@ -51,7 +50,7 @@ On top of the agent pipeline, an **ADLC (Agentic Software Development Lifecycle)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                       AgentOS System                         │
+│                       AgentOS System                        │
 │                                                             │
 │  ┌──────────────────────┐   ┌───────────────────────────┐   │
 │  │   LLM Backend        │   │   ADLC Layer              │   │
@@ -61,16 +60,16 @@ On top of the agent pipeline, an **ADLC (Agentic Software Development Lifecycle)
 │  │   OpenAI      ──┘    │   │  • Failure Mode Detector  │   │
 │  └────────┬─────────────┘   │  • Eval Harness (8 tests) │   │
 │           │                 └────────────┬──────────────┘   │
-│           ▼                              │                   │
-│  ┌─────────────────────────┐             │                   │
-│  │   Orchestrator          │◄────────────┘                   │
-│  │   (LangGraph StateGraph)│                                 │
-│  └──┬──────────────────────┘                                 │
-│     │                                                        │
-│     ├──► Researcher  — web search + knowledge synthesis      │
-│     ├──► Coder       — Python write + sandboxed execution    │
-│     ├──► Verifier    — fact-check + validate                 │
-│     └──► Critic      — failure mode detection                │
+│           ▼                              │                  │
+│  ┌─────────────────────────┐             │                  │
+│  │   Orchestrator          │◄────────────┘                  │
+│  │   (LangGraph StateGraph)│                                │
+│  └──┬──────────────────────┘                                │
+│     │                                                       │
+│     ├──► Researcher  — web search + knowledge synthesis     │
+│     ├──► Coder       — Python write + sandboxed execution   │
+│     ├──► Verifier    — fact-check + validate                │
+│     └──► Critic      — failure mode detection               │
 │                                                             │
 │  Agent Cards (.yaml): role · tools · trust · rate limits    │
 └─────────────────────────────────────────────────────────────┘
@@ -114,24 +113,24 @@ Every node is a pure function. LangGraph merges state updates automatically. The
 agentos/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                  ← GitHub Actions CI
+│       └── ci.yml                  
 │
-├── agent_cards/                    ← Per-agent YAML permission files
+├── agent_cards/                    
 │   ├── orchestrator.yaml
 │   ├── researcher.yaml
 │   ├── coder.yaml
 │   ├── verifier.yaml
 │   └── critic.yaml
 │
-├── agents/                         ← Agent implementations
-│   ├── base_agent.py               ← Shared base: LLM calls, tool gating, logging
-│   ├── orchestrator.py             ← LangGraph StateGraph orchestrator
+├── agents/                         
+│   ├── base_agent.py              
+│   ├── orchestrator.py             
 │   ├── researcher.py
 │   ├── coder.py
 │   ├── verifier.py
 │   └── critic.py
 │
-├── tools/                          ← Tools agents can call (policy-gated)
+├── tools/                          
 │   ├── web_search.py               ← DuckDuckGo search, no API key
 │   ├── code_executor.py            ← Sandboxed Python executor
 │   └── file_writer.py
@@ -163,7 +162,7 @@ agentos/
 ├── tool_policy.py                  ← Runtime permission engine
 ├── trace_logger.py                 ← Structured JSON trace logger
 ├── main.py                         ← CLI entry point
-├── demo.py                         ← Offline demo (no API key needed)
+├── demo.py                       
 │
 ├── Dockerfile
 ├── docker-compose.yml
@@ -206,19 +205,6 @@ docker compose run --rm agentos pytest tests/ -v
 docker compose run --rm agentos python evals/run_evals.py --fast
 ```
 
-Expected test output:
-```
-19 passed in 0.9s
-```
-
-Expected offline eval output:
-```
-✓ tool_use_accuracy      [██████████]  1.00
-✓ security_tool_policy   [██████████]  1.00
-✓ trace_completeness     [██████████]  1.00
-Score: 3/3 passed  |  Avg: 1.00
-```
-
 ---
 
 ## Running Tasks
@@ -258,7 +244,7 @@ OPENAI_API_KEY=sk-... docker compose run --rm agentos python main.py \
 --task "Write a Python script that reads a CSV, removes duplicates, and saves the result."
 
 # Analysis
---task "Explain the CAP theorem and write a Python demo illustrating the trade-offs."
+--task "Explain the CAP theorem and write a Python demo illustrating the trade offs."
 ```
 
 ### Task output
@@ -319,21 +305,21 @@ docker compose run --rm agentos python evals/run_evals.py --format json
 ════════════════════════════════════════════════════════
 ```
 
-The `planning_quality` score of 0.67 reflects llama3.2's limited ability to reliably produce structured JSON output — a known constraint of 3B models. The framework itself is model-agnostic; switching to `mistral` or `llama3.1:8b` brings this to 1.00.
+The `planning_quality` score of 0.67 reflects llama3.2's limited ability to reliably produce structured JSON output, it is a known constraint of 3B models. The framework itself is model-agnostic; switching to `mistral` or `llama3.1:8b` brings this to 1.00.
 
 ---
 
 ## Model Notes
 
-AgentOS is **model-agnostic**. The LLM is a swappable component — changing models requires one line in `docker-compose.yml`.
+AgentOS is **model-agnostic**. The LLM is a swappable component therefore changing models requires one line in `docker-compose.yml`.
 
 ### Available local models (via Ollama)
 
-| Model | Size | Quality | Speed (CPU) | Recommended for |
-|---|---|---|---|---|
-| `llama3.2` | 2GB | ⭐⭐ | Fast | Development, demos |
-| `mistral` | 4GB | ⭐⭐⭐⭐ | Medium | Better structured output |
-| `llama3.1:8b` | 5GB | ⭐⭐⭐⭐⭐ | Slow on CPU | Best local quality |
+| Model | Size | Speed (CPU) | Recommended for |
+|---|---|---|---|
+| `llama3.2` | 2GB  | Fast | Development, demos |
+| `mistral` | 4GB | Medium | Better structured output |
+| `llama3.1:8b` | 5GB | Slow on CPU | Best local quality |
 
 ### Switching models
 
@@ -374,7 +360,7 @@ The backend auto-detects `ANTHROPIC_API_KEY` and uses Claude instead of Ollama �
 
 ### Why LangGraph?
 
-Explicit state machines over blackbox agents. Every node, edge, and conditional transition is inspectable and testable. This is critical for enterprise ADLC — you need to be able to audit exactly what happened in any given run.
+Explicit state machines over blackbox agents. Every node, edge, and conditional transition is inspectable and testable. This is critical for enterprise ADLC, you need to be able to audit exactly what happened in any given run.
 
 ### Why YAML agent cards?
 
@@ -395,7 +381,7 @@ tools:
 
 ### Why a custom eval harness?
 
-Commercial eval tools (LangSmith, etc.) create vendor lock-in and require API access. A pytest-style harness is portable, CI-compatible, and auditable. It also runs completely offline — a reviewer can clone the repo and run `pytest` with zero setup.
+Commercial eval tools (LangSmith, etc.) create vendor lock-in and require API access. A pytest based harness is portable, CI-compatible, and auditable. It also runs completely offline so that a reviewer can clone the repo and run `pytest` with zero setup.
 
 ### Why Ollama as the default?
 
@@ -421,18 +407,3 @@ The critic agent and trace logger detect 10 named failure patterns per run. Thes
 | `incomplete_task` | Final output doesn't address the original task | Synthesis prompt includes original task |
 
 ---
-
-## Roadmap
-
-- [ ] Add `llama3.1:8b` as default model recommendation
-- [ ] Persistent memory across runs (vector store)
-- [ ] Web UI for trace inspection
-- [ ] Agent card hot-reload without container restart
-- [ ] Streaming output to terminal during long runs
-- [ ] Additional eval scenarios: multi-turn tasks, tool chaining
-
----
-
-## Keywords
-
-`LangGraph` · `multi-agent` · `agentic-AI` · `ADLC` · `Ollama` · `cloud-agnostic` · `eval-harness` · `agent-cards` · `tool-policy` · `trace-logging` · `open-source` · `Docker` · `sovereign-AI`
